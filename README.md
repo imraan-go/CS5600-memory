@@ -657,14 +657,188 @@ Yes it does.
 
 
 # Chapter 14
+ 
+## Question 1
 
-## Question 1
-## Question 1
-## Question 1
-## Question 1
-## Question 1
-## Question 1
-## Question 1
-## Question 1
-## Question 1
-## Question 1
+[ec2-user@ip-172-31-50-182 ~]$ ./null
+Segmentation fault (core dumped)
+
+
+## Question 2
+
+(gdb) run
+Starting program: /home/ec2-user/null 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib64/libthread_db.so.1".
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00000000004006b4 in main (argc=1, argv=0xfffffffff378) at null.c:7
+7	    printf("%d\n", *x);
+
+
+## Question 3
+ valgrind --leak-check=yes ./null
+==34439== Memcheck, a memory error detector
+==34439== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==34439== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==34439== Command: ./null
+==34439== 
+==34439== Invalid read of size 4
+==34439==    at 0x4006B4: main (null.c:7)
+==34439==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==34439== 
+==34439== 
+==34439== Process terminating with default action of signal 11 (SIGSEGV): dumping core
+==34439==  Access not within mapped region at address 0x0
+==34439==    at 0x4006B4: main (null.c:7)
+==34439==  If you believe this happened as a result of a stack
+==34439==  overflow in your program's main thread (unlikely but
+==34439==  possible), you can try to increase the size of the
+==34439==  main thread stack using the --main-stacksize= flag.
+==34439==  The main thread stack size used in this run was 10485760.
+==34439== 
+==34439== HEAP SUMMARY:
+==34439==     in use at exit: 4 bytes in 1 blocks
+==34439==   total heap usage: 1 allocs, 0 frees, 4 bytes allocated
+==34439== 
+==34439== 4 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==34439==    at 0x486D440: calloc (vg_replace_malloc.c:1328)
+==34439==    by 0x4006A7: main (null.c:5)
+==34439== 
+==34439== LEAK SUMMARY:
+==34439==    definitely lost: 4 bytes in 1 blocks
+==34439==    indirectly lost: 0 bytes in 0 blocks
+==34439==      possibly lost: 0 bytes in 0 blocks
+==34439==    still reachable: 0 bytes in 0 blocks
+==34439==         suppressed: 0 bytes in 0 blocks
+==34439== 
+==34439== For lists of detected and suppressed errors, rerun with: -s
+==34439== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+Segmentation fault (core dumped)
+
+
+## Question 4
+
+Reading symbols from forget...
+(gdb) run
+Starting program: /home/ec2-user/forget 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib64/libthread_db.so.1".
+1
+[Inferior 1 (process 34545) exited normally]
+
+
+--------------
+
+
+
+valgrind --leak-check=yes ./forget 
+==34548== Memcheck, a memory error detector
+==34548== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==34548== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==34548== Command: ./forget
+==34548== 
+1
+==34548== 
+==34548== HEAP SUMMARY:
+==34548==     in use at exit: 4 bytes in 1 blocks
+==34548==   total heap usage: 2 allocs, 1 frees, 1,028 bytes allocated
+==34548== 
+==34548== 4 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==34548==    at 0x48681CC: malloc (vg_replace_malloc.c:381)
+==34548==    by 0x400623: main (forget_free.c:5)
+==34548== 
+==34548== LEAK SUMMARY:
+==34548==    definitely lost: 4 bytes in 1 blocks
+==34548==    indirectly lost: 0 bytes in 0 blocks
+==34548==      possibly lost: 0 bytes in 0 blocks
+==34548==    still reachable: 0 bytes in 0 blocks
+==34548==         suppressed: 0 bytes in 0 blocks
+==34548== 
+==34548== For lists of detected and suppressed errors, rerun with: -s
+==34548== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+## Question 5
+
+Reading symbols from 100...
+(gdb) run
+Starting program: /home/ec2-user/100 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib64/libthread_db.so.1".
+[Inferior 1 (process 34699) exited normally]
+
+----------------
+valgrind --leak-check=yes ./100
+==34701== Memcheck, a memory error detector
+==34701== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==34701== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==34701== Command: ./100
+==34701== 
+==34701== Invalid write of size 4
+==34701==    at 0x400630: main (100.c:6)
+==34701==  Address 0x4a521d0 is 224 bytes inside an unallocated block of size 4,194,032 in arena "client"
+==34701== 
+==34701== 
+==34701== HEAP SUMMARY:
+==34701==     in use at exit: 0 bytes in 0 blocks
+==34701==   total heap usage: 1 allocs, 1 frees, 100 bytes allocated
+==34701== 
+==34701== All heap blocks were freed -- no leaks are possible
+==34701== 
+==34701== For lists of detected and suppressed errors, rerun with: -s
+==34701== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+
+## Question 6
+yes the program runs and prints garbage value.
+
+
+valgrind --leak-check=yes ./free
+==35375== Memcheck, a memory error detector
+==35375== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==35375== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==35375== Command: ./free
+==35375== 
+==35375== Invalid read of size 4
+==35375==    at 0x4006B4: main (free_then_print.c:8)
+==35375==  Address 0x4a52040 is 0 bytes inside a block of size 100 free'd
+==35375==    at 0x486AC88: free (vg_replace_malloc.c:872)
+==35375==    by 0x4006AF: main (free_then_print.c:6)
+==35375==  Block was alloc'd at
+==35375==    at 0x48681CC: malloc (vg_replace_malloc.c:381)
+==35375==    by 0x4006A3: main (free_then_print.c:5)
+==35375== 
+0
+==35375== 
+==35375== HEAP SUMMARY:
+==35375==     in use at exit: 0 bytes in 0 blocks
+==35375==   total heap usage: 2 allocs, 2 frees, 1,124 bytes allocated
+==35375== 
+==35375== All heap blocks were freed -- no leaks are possible
+==35375== 
+==35375== For lists of detected and suppressed errors, rerun with: -s
+==35375== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+## Question 7
+ Compilation shows error. Also the program crashes.
+
+
+## Question 8
+valgrind --leak-check=yes ./vector 
+==35719== Memcheck, a memory error detector
+==35719== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==35719== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==35719== Command: ./vector
+==35719== 
+first value: 4
+second value: 5
+third value: 6
+size: 3
+capacity: 4
+==35719== 
+==35719== HEAP SUMMARY:
+==35719==     in use at exit: 0 bytes in 0 blocks
+==35719==   total heap usage: 4 allocs, 4 frees, 1,052 bytes allocated
+==35719== 
+==35719== All heap blocks were freed -- no leaks are possible
+==35719== 
+==35719== For lists of detected and suppressed errors, rerun with: -s
+==35719== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
